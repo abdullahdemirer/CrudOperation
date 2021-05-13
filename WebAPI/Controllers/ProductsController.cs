@@ -20,10 +20,34 @@ namespace WebAPI.Controllers
             _productService = productService;
         }
 
-        [HttpGet]
+        [HttpGet("getall")]
         public List<Product> GetProducts()
         {
             return _productService.GetAll().Data;
+        }
+
+        [HttpPost("addProduct")]
+        public IActionResult AddProduct(Product product)
+        {
+           var result =  _productService.Add(product);
+
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("getById")]
+        public IActionResult GetProductById(int id)
+        {
+            var result = _productService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
         }
     }
 }
